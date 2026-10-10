@@ -1,0 +1,23 @@
+name: smolci-qa
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    name: Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
+    runs-on: [self-hosted, smolci]
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version:
+          - 24
+        os:
+          - ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+      - run: npm run test
